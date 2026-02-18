@@ -1,0 +1,186 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Parse arguments
+PROJECT_NAME=""
+for arg in "$@"; do
+  case $arg in
+    --name=*)
+      PROJECT_NAME="${arg#*=}"
+      shift
+      ;;
+    *)
+      echo "Unknown argument: $arg"
+      echo "Usage: ./create_new_project --name=<project-name>"
+      exit 1
+      ;;
+  esac
+done
+
+if [ -z "$PROJECT_NAME" ]; then
+  echo "Error: --name is required"
+  echo "Usage: ./create_new_project --name=<project-name>"
+  exit 1
+fi
+
+if [ -d "$PROJECT_NAME" ]; then
+  echo "Error: Directory '$PROJECT_NAME' already exists"
+  exit 1
+fi
+
+echo "Creating project: $PROJECT_NAME"
+
+# Create directory structure
+mkdir -p "$PROJECT_NAME/src/main/java/com/example"
+mkdir -p "$PROJECT_NAME/src/test/java/com/example"
+
+# settings.gradle
+cat > "$PROJECT_NAME/settings.gradle" <<EOF
+rootProject.name = '$PROJECT_NAME'
+EOF
+
+# build.gradle
+cat > "$PROJECT_NAME/build.gradle" <<EOF
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.example'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0'
+}
+
+application {
+    mainClass = 'com.example.Main'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "failed", "skipped"
+        showStandardStreams = true
+    }
+}
+EOF
+
+# gradle wrapper properties
+mkdir -p "$PROJECT_NAME/gradle/wrapper"
+cat > "$PROJECT_NAME/gradle/wrapper/gradle-wrapper.properties" <<EOF
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.5-bin.zip
+networkTimeout=10000
+validateDistributionUrl=true
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+EOF
+
+# gradlew script
+cat > "$PROJECT_NAME/gradlew" <<'EOF'
+#!/bin/sh
+#
+# Gradle start up script for UN*X
+#
+APP_HOME=$(cd "$(dirname "$0")" && pwd)
+exec java -jar "$APP_HOME/gradle/wrapper/gradle-wrapper.jar" "$@" 2>/dev/null || \
+  gradle "$@"
+EOF
+
+# Simple Main class
+cat > "$PROJECT_NAME/src/main/java/com/example/Main.java" <<EOF
+package com.example;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello from $PROJECT_NAME!");
+    }
+}
+EOF
+
+# Sample test
+cat > "$PROJECT_NAME/src/test/java/com/example/MainTest.java" <<EOF
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class MainTest {
+
+    @Test
+    void placeholderTest() {
+        assertTrue(true);
+    }
+}
+EOF
+
+# Dockerfile
+cat > "$PROJECT_NAME/Dockerfile" <<EOF
+FROM gradle:8.5-jdk17 AS builder
+WORKDIR /app
+COPY . .
+RUN gradle build --no-daemon -x test
+
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=builder /app/build/libs/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
+EOF
+
+# docker-compose.yml
+cat > "$PROJECT_NAME/docker-compose.yml" <<EOF
+services:
+  app:
+    build: .
+    container_name: ${PROJECT_NAME}
+    ports:
+      - "8080:8080"
+EOF
+
+# .gitignore
+cat > "$PROJECT_NAME/.gitignore" <<EOF
+.gradle/
+build/
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+.idea/
+*.iml
+out/
+EOF
+
+# Init git repo
+git -C "$PROJECT_NAME" init -q
+git -C "$PROJECT_NAME" add .
+git -C "$PROJECT_NAME" commit -q -m "Initial project setup: $PROJECT_NAME"
+
+echo ""
+echo "Project '$PROJECT_NAME' created successfully!"
+echo ""
+echo "Structure:"
+echo "  $PROJECT_NAME/"
+echo "  ├── src/main/java/com/example/Main.java"
+echo "  ├── src/test/java/com/example/MainTest.java"
+echo "  ├── build.gradle"
+echo "  ├── settings.gradle"
+echo "  ├── Dockerfile"
+echo "  ├── docker-compose.yml"
+echo "  └── .gitignore"
+echo ""
+echo "To build:  cd $PROJECT_NAME && gradle build"
+echo "To run:    cd $PROJECT_NAME && gradle run"
+echo "To docker: cd $PROJECT_NAME && docker compose up --build"
