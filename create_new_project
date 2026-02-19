@@ -164,9 +164,9 @@ out/
 EOF
 
 # Init git repo
-git -C "$PROJECT_NAME" init -q
-git -C "$PROJECT_NAME" add .
-git -C "$PROJECT_NAME" commit -q -m "Initial project setup: $PROJECT_NAME"
+# git -C "$PROJECT_NAME" init -q
+# git -C "$PROJECT_NAME" add .
+# git -C "$PROJECT_NAME" commit -q -m "Initial project setup: $PROJECT_NAME"
 
 echo ""
 echo "Project '$PROJECT_NAME' created successfully!"
