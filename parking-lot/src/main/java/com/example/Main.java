@@ -66,8 +66,8 @@ public class Main {
         System.out.println("Parked " + truck1.getPlateNumber() + " at spot " + t4.getSpot().getSpotId());
 
         // Unpark car1
-        attendant.unAssignParkingTicket(t1);
-        System.out.println("Unparked " + car1.getPlateNumber() + " from spot " + t1.getSpot().getSpotId());
+        double fee= attendant.unAssignParkingTicket(t1);
+        System.out.println("Unparked " + car1.getPlateNumber() + " | Fee: ₹" + fee);
 
         // Park car3 — should reuse the freed spot
         var t5 = attendant.assignParkingTicket(car3);
