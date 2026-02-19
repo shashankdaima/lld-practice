@@ -1,5 +1,7 @@
 package com.example.models.lot;
 
+import com.example.exceptions.ParkingLotUninitializedException;
+
 public class ParkingLot {
     private static ParkingLot instance = null;
     private ParkingFloor[] floors;
@@ -17,7 +19,7 @@ public class ParkingLot {
 
     public static synchronized ParkingLot getInstance() {
         if (instance == null) {
-            throw new IllegalStateException("PackingLot is not initialized. Call getInstance(ParkingFloor[] floors) first.");
+            throw new ParkingLotUninitializedException();
         }
         return instance;
     }
