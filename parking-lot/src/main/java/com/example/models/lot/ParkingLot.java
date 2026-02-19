@@ -1,34 +1,35 @@
 package com.example.models.lot;
 
-import com.example.exceptions.ParkingLotUninitializedException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParkingLot {
     private static ParkingLot instance = null;
-    private ParkingFloor[] floors;
+    private List<ParkingFloor> floors;
 
-    private ParkingLot(ParkingFloor[] floors) {
-        this.floors = floors;
-    }
-
-    public static synchronized ParkingLot getInstance(ParkingFloor[] floors) {
-        if (instance == null) {
-            instance = new ParkingLot(floors);
-        }
-        return instance;
+    private ParkingLot() {
+        this.floors = new ArrayList<>();
     }
 
     public static synchronized ParkingLot getInstance() {
         if (instance == null) {
-            throw new ParkingLotUninitializedException();
+            instance = new ParkingLot();
         }
         return instance;
     }
 
-    public ParkingFloor[] getFloors() {
+    public List<ParkingFloor> getFloors() {
         return floors;
     }
 
-    public void setFloors(ParkingFloor[] floors) {
+    public void setFloors(List<ParkingFloor> floors) {
         this.floors = floors;
+    }
+
+    public boolean addFloor(ParkingFloor floor) {
+        if (floors == null) {
+            floors = new ArrayList<>();
+        }
+        return floors.add(floor);
     }
 }

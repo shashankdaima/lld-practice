@@ -1,11 +1,18 @@
 package com.example.models.lot;
 
-public class ParkingFloor {
-    private ParkingSpot[] spots;
-    private int floor;
+import java.util.Optional;
 
-    public ParkingFloor(ParkingSpot[] spots, int floor) {
-        this.spots = spots;
+import com.example.enums.SpotType;
+import com.example.enums.VehicleSize;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ParkingFloor {
+    private List<ParkingSpot> spots = new ArrayList<>();
+    private int floor;
+    
+    public ParkingFloor(int floor){
         this.floor = floor;
     }
 
@@ -17,12 +24,35 @@ public class ParkingFloor {
         this.floor = floor;
     }
 
-    public ParkingSpot[] getSpots() {
+    public List<ParkingSpot> getSpots() {
         return spots;
     }
 
-    public void setSpots(ParkingSpot[] spots) {
+    public void setSpots(List<ParkingSpot> spots) {
         this.spots = spots;
-    };
+    }
 
+    private SpotType mapToSpotType(VehicleSize size){
+        return switch (size) {
+            case TWO_WHEELER -> SpotType.BIKE;
+            case SMALL       -> SpotType.SMALL;
+            case MEDIUM      -> SpotType.MEDIUM;
+            case LARGE       -> SpotType.LARGE;
+        };
+    }
+
+    public ParkingSpot getAvailableParkingSpot(VehicleSize vehicleSize){
+        SpotType spotType = mapToSpotType(vehicleSize);
+        for (ParkingSpot spot : spots) {
+            if ((!spot.isOccupied()) && spot.getType() == spotType) {
+                return spot;
+            }
+        }
+        return null;
+    }
+
+    public boolean addSpot(ParkingSpot spot){
+        this.spots.add(spot);
+        return true;
+    }
 }
