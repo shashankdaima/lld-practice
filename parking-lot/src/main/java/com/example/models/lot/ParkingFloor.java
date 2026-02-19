@@ -41,10 +41,11 @@ public class ParkingFloor {
         };
     }
 
-    public ParkingSpot getAvailableParkingSpot(VehicleSize vehicleSize){
+    public synchronized ParkingSpot getAvailableParkingSpot(VehicleSize vehicleSize){
         SpotType spotType = mapToSpotType(vehicleSize);
         for (ParkingSpot spot : spots) {
             if ((!spot.isOccupied()) && spot.getType() == spotType) {
+                spot.setOccupied(true);
                 return spot;
             }
         }
