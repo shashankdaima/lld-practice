@@ -1,16 +1,20 @@
-package main.java.com.example.models;
+package com.example.models;
+
+import java.util.ArrayList;
 
 public class Member {
     private String memberId;
     private String name;
     private String email;
+    private ArrayList<BorrowRecord> borrowRecords;
 
     public Member(String memberId, String name, String email) {
         this.memberId = memberId;
         this.name = name;
         this.email = email;
+        this.borrowRecords = new ArrayList<>();
     }
-    
+
     public String getMemberId() {
         return memberId;
     }
@@ -28,5 +32,8 @@ public class Member {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    public ArrayList<BorrowRecord> getBorrowRecords() {
+        return borrowRecords;
     }
 }

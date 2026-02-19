@@ -1,4 +1,4 @@
-package main.java.com.example.enums;
+package com.example.enums;
 
 public enum BookStatus {
     BORROWED, LOST, AVAILABLE    

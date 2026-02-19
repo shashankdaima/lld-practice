@@ -1,9 +1,9 @@
-package main.java.com.example.models;
+package com.example.models;
 
 import java.util.ArrayList;
 
 public class Library {
-    private Library instance;
+    private static Library instance;
     private ArrayList<BorrowRecord> borrowRecords;
     private ArrayList<Book> books;
     private ArrayList<Member> members;
@@ -14,7 +14,7 @@ public class Library {
         this.members = new ArrayList<>();
     }
 
-    public synchronized Library getInstance() {
+    public static synchronized Library getInstance() {
         if (instance == null) {
             instance = new Library();
         }
@@ -37,11 +37,7 @@ public class Library {
         this.books = books;
     }
 
-    public void setInstance(Library instance) {
-        this.instance = instance;
-    }
-
-    public ArrayList<Member> getMembers() {
+public ArrayList<Member> getMembers() {
         return members;
     }
 

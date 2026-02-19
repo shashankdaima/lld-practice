@@ -1,8 +1,6 @@
-package main.java.com.example.models;
+package com.example.models;
 
 import java.time.LocalDateTime;
-
-import com.example.models.Member;
 
 public class BorrowRecord {
     private String recordId;

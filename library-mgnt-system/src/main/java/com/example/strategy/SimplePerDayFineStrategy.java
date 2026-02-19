@@ -1,6 +1,6 @@
-package main.java.com.example.strategy;
-import main.java.com.example.models.BorrowRecord;
-import main.java.com.example.strategy.BookFineStrategy;
+package com.example.strategy;
+
+import com.example.models.BorrowRecord;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

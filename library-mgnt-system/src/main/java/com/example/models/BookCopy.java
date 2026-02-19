@@ -1,6 +1,6 @@
-package main.java.com.example.models;
+package com.example.models;
 
-import main.java.com.example.enums.BookStatus;
+import com.example.enums.BookStatus;
 
 public class BookCopy {
     private String copyId;

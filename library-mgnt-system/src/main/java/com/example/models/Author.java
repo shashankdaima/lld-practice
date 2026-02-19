@@ -1,4 +1,4 @@
-package main.java.com.example.models;
+package com.example.models;
 
 public class Author {
     private String name;

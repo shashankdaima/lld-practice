@@ -1,9 +1,10 @@
-package main.java.com.example.services;
+package com.example.services;
 
-import main.java.com.example.strategy.BookFineStrategy;
+import com.example.models.BorrowRecord;
+import com.example.strategy.BookFineStrategy;
 
 public class FineCalculatorService {
-       public static double calculateFine(BookFineStrategy strategy,BorrowRecord record ){
-            return strategy.calculateFine(record);
-       }
+    public static double calculateFine(BookFineStrategy strategy, BorrowRecord record) {
+        return strategy.calculateFine(record);
+    }
 }
