@@ -2,7 +2,7 @@ package com.example.models.lot;
 
 import java.util.UUID;
 
-import com.example.exceptions.ParkingSlotUnavailable;
+import com.example.exceptions.ParkingSlotUnavailableException;
 import com.example.models.vehicles.Vehicle;
 
 public class ParkingAttendent {
@@ -15,7 +15,7 @@ public class ParkingAttendent {
                 return new ParkingTicket(UUID.randomUUID().toString(), vehicle, availableSpot);
             }
         }
-        throw new ParkingSlotUnavailable();
+        throw new ParkingSlotUnavailableException();
     }
 
     public void unAssignParkingTicket(ParkingTicket ticket){
