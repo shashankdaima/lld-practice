@@ -1,11 +1,8 @@
 package com.hotelmgntsystem.strategy.auth;
 
+import com.hotelmgntsystem.enums.AuthType;
+import com.hotelmgntsystem.models.authpayloads.AuthPayload;
+
 public interface AuthStrategy {
-    /**
-     * Execute the authentication strategy.
-     * 
-     * @param username The username for authentication (required)
-     * @param password The password for authentication (optional, can be null)
-     */
-    void execute(String username, String password);
+    boolean execute(AuthType authType, AuthPayload authPayload);
 }
