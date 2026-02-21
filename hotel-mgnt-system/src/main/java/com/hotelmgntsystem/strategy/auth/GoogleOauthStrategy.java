@@ -7,13 +7,13 @@ import com.hotelmgntsystem.models.authpayloads.GoogleOauthPayload;
 
 public class GoogleOauthStrategy implements AuthStrategy {
     @Override
-    public boolean execute(AuthType authType, AuthPayload authPayload) {
-        if (authType == null || authType != AuthType.GOOGLE) {
-            throw new IllegalArgumentException("Invalid auth type");
-        }
+    public boolean execute(AuthPayload authPayload) {
         if (!(authPayload instanceof GoogleOauthPayload)) {
             throw new IllegalArgumentException("Invalid auth payload");
         }
+        GoogleOauthPayload googleOauthPayload = (GoogleOauthPayload) authPayload;
+        String googleToken = googleOauthPayload.getGoogleToken();
+        // TODO: Add authentication logic using googleToken
         return true;
 
     }

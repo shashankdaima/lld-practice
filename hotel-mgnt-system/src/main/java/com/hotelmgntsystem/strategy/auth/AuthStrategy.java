@@ -4,5 +4,5 @@ import com.hotelmgntsystem.enums.AuthType;
 import com.hotelmgntsystem.models.authpayloads.AuthPayload;
 
 public interface AuthStrategy {
-    boolean execute(AuthType authType, AuthPayload authPayload);
+    boolean execute(AuthPayload authPayload);
 }

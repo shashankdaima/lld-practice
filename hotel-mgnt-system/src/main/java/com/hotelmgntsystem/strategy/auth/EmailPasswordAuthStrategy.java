@@ -7,10 +7,7 @@ import com.hotelmgntsystem.models.authpayloads.EmailPayload;
 public class EmailPasswordAuthStrategy implements AuthStrategy{
 
     @Override
-    public boolean execute(AuthType authType, AuthPayload authPayload) {
-        if (authType == null || authType != AuthType.EMAIL) {
-            throw new IllegalArgumentException("Invalid auth type");
-        }
+    public boolean execute(AuthPayload authPayload) {
         if (!(authPayload instanceof EmailPayload)) {
             throw new IllegalArgumentException("Invalid auth payload");
         }
