@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-group = 'com.example'
+group = 'com.hotelmgntsystem'
 version = '1.0.0'
 
 java {
@@ -22,7 +22,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'com.example.Main'
+    mainClass = 'com.hotelmgntsystem.Main'
 }
 
 test {

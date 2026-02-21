@@ -31,9 +31,13 @@ fi
 
 echo "Creating project: $PROJECT_NAME"
 
+# Derive a valid Java package name: lowercase, strip non-alphanumeric chars
+PACKAGE_NAME=$(echo "$PROJECT_NAME" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9')
+PACKAGE_DIR=$(echo "$PACKAGE_NAME" | sed 's/./&/g')
+
 # Create directory structure
-mkdir -p "$PROJECT_NAME/src/main/java/com/example"
-mkdir -p "$PROJECT_NAME/src/test/java/com/example"
+mkdir -p "$PROJECT_NAME/src/main/java/com/$PACKAGE_NAME"
+mkdir -p "$PROJECT_NAME/src/test/java/com/$PACKAGE_NAME"
 
 # settings.gradle
 cat > "$PROJECT_NAME/settings.gradle" <<EOF
@@ -47,7 +51,7 @@ plugins {
     id 'application'
 }
 
-group = 'com.example'
+group = 'com.$PACKAGE_NAME'
 version = '1.0.0'
 
 java {
@@ -66,7 +70,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'com.example.Main'
+    mainClass = 'com.$PACKAGE_NAME.Main'
 }
 
 test {
@@ -102,8 +106,8 @@ exec java -jar "$APP_HOME/gradle/wrapper/gradle-wrapper.jar" "$@" 2>/dev/null ||
 EOF
 
 # Simple Main class
-cat > "$PROJECT_NAME/src/main/java/com/example/Main.java" <<EOF
-package com.example;
+cat > "$PROJECT_NAME/src/main/java/com/$PACKAGE_NAME/Main.java" <<EOF
+package com.$PACKAGE_NAME;
 
 public class Main {
     public static void main(String[] args) {
@@ -113,8 +117,8 @@ public class Main {
 EOF
 
 # Sample test
-cat > "$PROJECT_NAME/src/test/java/com/example/MainTest.java" <<EOF
-package com.example;
+cat > "$PROJECT_NAME/src/test/java/com/$PACKAGE_NAME/MainTest.java" <<EOF
+package com.$PACKAGE_NAME;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -173,8 +177,8 @@ echo "Project '$PROJECT_NAME' created successfully!"
 echo ""
 echo "Structure:"
 echo "  $PROJECT_NAME/"
-echo "  ├── src/main/java/com/example/Main.java"
-echo "  ├── src/test/java/com/example/MainTest.java"
+echo "  ├── src/main/java/com/$PACKAGE_NAME/Main.java"
+echo "  ├── src/test/java/com/$PACKAGE_NAME/MainTest.java"
 echo "  ├── build.gradle"
 echo "  ├── settings.gradle"
 echo "  ├── Dockerfile"
